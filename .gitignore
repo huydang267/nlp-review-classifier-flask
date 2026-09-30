@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Trained artefacts (regenerate with: python train_model.py)
+*.pkl
+
+# Course dataset and generated intermediate files (not redistributable, see app/data/README.md)
+app/data/*.csv
+notebooks/*.csv
+notebooks/vocab.txt
+notebooks/count_vectors.txt
+notebooks/stopwords_en.txt
+
+# Media
+*.mp4
+
+# OS and editor files
+.DS_Store
+~$*

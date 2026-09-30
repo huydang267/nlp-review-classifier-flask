@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}{{ department }} - H&amp;N{% endblock %}
+{% block content %}
+  <div class="category-banner"
+    style="background-image: url('{{ url_for('static', filename='img/dept_' ~ department|lower ~ '.jpg') }}');">
+    <div class="category-banner-inner">
+      <h1 class="category-banner-title">{{ department }}</h1>
+      <p class="category-banner-meta">{{ products|length }} pieces</p>
+    </div>
+  </div>
+
+  {% if not products %}
+    <p>No items found.</p>
+  {% else %}
+    <section class="grid">
+      {% for p in products %}
+        <article class="card">
+          <h3>{{ p['Clothes Title'] }}</h3>
+          <p class="meta">
+            {{ p['Department Name'] }} &middot; {{ p['Class Name'] }}
+            &middot; #{{ p['Clothing ID'] }}
+          </p>
+          <p>{{ p['Clothes Description']|truncate(100) }}</p>
+          <a class="btn-outline" href="{{ url_for('item', clothing_id=p['Clothing ID']) }}">View item</a>
+        </article>
+      {% endfor %}
+    </section>
+  {% endif %}
+{% endblock %}

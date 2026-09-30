@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}{{ item['Clothes Title'] }} — H&amp;N{% endblock %}
+{% block content %}
+  <article class="product">
+    <h1 class="page-title">{{ item['Clothes Title'] }}</h1>
+    <p class="meta">{{ item['Department Name'] }} &middot; {{ item['Class Name'] }} &middot; {{ item['Division Name'] }} &middot; Item #{{ item['Clothing ID'] }}</p>
+    <p class="product-desc">{{ item['Clothes Description'] }}</p>
+    <a class="btn-primary" href="{{ url_for('create_review', clothing_id=item['Clothing ID']) }}">Write a Review</a>
+  </article>
+
+  <section class="reviews">
+    <h2 class="section-title">Reviews ({{ review_count }})</h2>
+    {% if review_count == 0 %}
+      <p class="muted">No reviews yet.</p>
+    {% else %}
+      {% for r in reviews %}
+        <article class="review">
+          <h3>{{ r['Title'] }}</h3>
+          <p class="meta">
+            <span class="stars">{{ '★' * r['Rating'] }}{{ '☆' * (5 - r['Rating']) }}</span>
+            &middot; Recommended: {% if r['Recommended IND'] %}Yes{% else %}No{% endif %}
+            &middot; Age {{ r['Age'] }}
+          </p>
+          <p>{{ r['Review Text'] }}</p>
+        </article>
+      {% endfor %}
+    {% endif %}
+  </section>
+{% endblock %}

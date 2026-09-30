@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}{% if query %}Search: {{ query }}{% else %}Search{% endif %} - H&amp;N{% endblock %}
+{% block content %}
+  <h1 class="page-title">Search</h1>
+
+  {% if count is none %}
+    <p>Enter a keyword above to search the edit.</p>
+  {% elif count == 0 %}
+    <p class="search-count">0 items matched "{{ query }}".</p>
+  {% else %}
+    <p class="search-count">{{ count }} item{{ 's' if count != 1 else '' }} matched "{{ query }}".</p>
+    <section class="grid">
+      {% for p in products %}
+        <article class="card">
+          <h3>{{ p['Clothes Title'] }}</h3>
+          <p class="meta">
+            {{ p['Department Name'] }} &middot; {{ p['Class Name'] }}
+            &middot; #{{ p['Clothing ID'] }}
+          </p>
+          <p>{{ p['Clothes Description']|truncate(100) }}</p>
+          <a class="btn-outline" href="{{ url_for('item', clothing_id=p['Clothing ID']) }}">View item</a>
+        </article>
+      {% endfor %}
+    </section>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}About - H&amp;N{% endblock %}
+{% block content %}
+
+  <section class="hero about-hero"
+    style="background-image: url('{{ url_for('static', filename='img/about_banner.jpg') }}');">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <h1 class="hero-wordmark">About H&amp;N</h1>
+        <p class="hero-tagline">A Story of Refined Simplicity</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section">
+    <h2 class="section-title">Our Edit</h2>
+    <p>H&amp;N curates contemporary womenswear for the modern woman &ndash; pieces that move between boardroom, weekend, and evening with effortless ease. 1,095 styles across six departments, each chosen for the way it feels in the hand and the way it carries through the day.</p>
+  </section>
+
+  <section class="about-section">
+    <h2 class="section-title">Intelligence Behind the Edit</h2>
+    <p>Reviews on H&amp;N are enhanced by a machine learning recommendation system. When a customer submits a review, the system reads the language of the writing and predicts whether the item earns a recommendation &ndash; helping future shoppers shop with confidence.</p>
+  </section>
+
+  <section class="about-section">
+    <h2 class="section-title">Our Departments</h2>
+    <div class="dept-tiles">
+      {% for d in departments %}
+        <a class="dept-tile" href="{{ url_for('category', department=d) }}">{{ d }}</a>
+      {% endfor %}
+    </div>
+  </section>
+
+{% endblock %}

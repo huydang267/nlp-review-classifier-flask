@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Write a Review — {{ product['Clothes Title'] }} — H&amp;N{% endblock %}
+{% block content %}
+<div class="form-page">
+
+  <h1 class="page-title">Write a Review</h1>
+  <p class="meta">for <strong>{{ product['Clothes Title'] }}</strong>
+    ({{ product['Department Name'] }} &middot; {{ product['Class Name'] }})</p>
+
+  {% if error %}
+    <p class="error">{{ error }}</p>
+  {% endif %}
+
+  {% if prediction is none %}
+    <form class="review-form" method="post" action="{{ url_for('create_review') }}">
+      <input type="hidden" name="clothing_id" value="{{ product['Clothing ID'] }}">
+
+      <label for="title">Review Title</label>
+      <input type="text" id="title" name="title" required
+             value="{{ form.title if form else '' }}">
+
+      <label for="review_text">Your Review</label>
+      <textarea id="review_text" name="review_text" rows="5" required
+                >{{ form.review_text if form else '' }}</textarea>
+
+      <label for="rating">Rating</label>
+      <select id="rating" name="rating" required>
+        {% for n in range(1, 6) %}
+          <option value="{{ n }}"
+                  {% if form and form.rating == n %}selected{% endif %}>
+            {{ '★' * n }} ({{ n }})
+          </option>
+        {% endfor %}
+      </select>
+
+      <button type="submit" class="btn-primary">Get Recommendation</button>
+    </form>
+
+  {% else %}
+    <div class="prediction-box">
+      <h2>Model Recommendation</h2>
+      <p>Based on your review, the model predicts this item is
+        {% if prediction == 1 %}
+          <strong class="rec-yes">Recommended &check;</strong>
+        {% else %}
+          <strong class="rec-no">Not Recommended &times;</strong>
+        {% endif %}
+        <span class="confidence">(confidence: {{ (proba * 100)|round|int }}%)</span>.
+      </p>
+      <p class="meta">Review: "{{ form.title }}" &ndash; Rating: {{ form.rating }}/5</p>
+      <p>Accept this label, or override it before submitting:</p>
+
+      {% for label_val, label_text in [
+          (prediction,     'Confirm: ' ~ ('Recommended' if prediction == 1 else 'Not Recommended')),
+          (1 - prediction, 'Override: ' ~ ('Not Recommended' if prediction == 1 else 'Recommended'))
+      ] %}
+        <form method="post" action="{{ url_for('confirm_review') }}" style="display:inline">
+          <input type="hidden" name="clothing_id" value="{{ product['Clothing ID'] }}">
+          <input type="hidden" name="title"       value="{{ form.title }}">
+          <input type="hidden" name="review_text" value="{{ form.review_text }}">
+          <input type="hidden" name="rating"      value="{{ form.rating }}">
+          <input type="hidden" name="final_label" value="{{ label_val }}">
+          <button type="submit"
+                  class="{% if label_val == prediction %}btn-primary{% else %}btn-outline{% endif %}">
+            {{ label_text }}
+          </button>
+        </form>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

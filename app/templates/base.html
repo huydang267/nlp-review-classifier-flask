@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}H&amp;N - Elevated Essentials{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="{{ url_for('home') }}">
+        <img src="{{ url_for('static', filename='img/logo.png') }}"
+             alt="H&N" class="nav-logo">
+      </a>
+      <nav class="dept-nav">
+        {% for d in departments %}
+          <a href="{{ url_for('category', department=d) }}">{{ d }}</a>
+        {% endfor %}
+        <a href="{{ url_for('about') }}">About</a>
+      </nav>
+      <form class="search-form" action="{{ url_for('search') }}" method="get">
+        <input type="search" name="q" placeholder="Search"
+               value="{{ request.args.get('q', '') }}">
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  </header>
+
+  <main class="page">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <img src="{{ url_for('static', filename='img/logo.png') }}"
+         alt="H&amp;N logo" class="footer-logo">
+    <p class="footer-meta">
+      H&amp;N &copy; 2026 &nbsp;|&nbsp; RMIT COSC 2815 &nbsp;|&nbsp; Gia Huy Dang
+    </p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}H&amp;N - Elevated Essentials{% endblock %}
+{% block content %}
+  <section class="hero"
+    style="background-image: url('{{ url_for('static', filename='img/hero_background.jpg') }}');">
+
+    <div class="hero-inner">
+      <div class="hero-text">
+        <h1 class="hero-wordmark">H&amp;N</h1>
+        <p class="hero-tagline">Elevated Essentials</p>
+        <a class="hero-cta" href="{{ url_for('category', department='Dresses') }}">
+          Explore the Edit
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="catalogue">
+    <h2 class="section-title">The Edit</h2>
+    <p class="section-meta">{{ products|length }} pieces</p>
+
+    <section class="grid">
+      {% for p in products %}
+        <article class="card">
+          <h3>{{ p['Clothes Title'] }}</h3>
+          <p class="meta">
+            {{ p['Department Name'] }} &middot; {{ p['Class Name'] }}
+            &middot; #{{ p['Clothing ID'] }}
+          </p>
+          <p>{{ p['Clothes Description']|truncate(100) }}</p>
+          <a class="btn-outline" href="{{ url_for('item', clothing_id=p['Clothing ID']) }}">View item</a>
+        </article>
+      {% endfor %}
+    </section>
+  </section>
+{% endblock %}
